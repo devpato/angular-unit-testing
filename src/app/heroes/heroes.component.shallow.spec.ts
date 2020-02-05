@@ -4,6 +4,7 @@ import { NO_ERRORS_SCHEMA, Input, Component } from "@angular/core";
 import { HeroService } from "../hero.service";
 import { of } from "rxjs";
 import { Hero } from "../hero";
+import { By } from "@angular/platform-browser";
 
 describe("Heroes Components (shallow test)", () => {
   let fixture: ComponentFixture<HeroesComponent>;
@@ -48,5 +49,14 @@ describe("Heroes Components (shallow test)", () => {
     fixture.detectChanges(); //run this to trigger the ngOnit()
 
     expect(fixture.componentInstance.heroes.length).toBe(3);
+  });
+
+  //Delign with list elements (integration test)
+  it("should create one li fo reach hero", () => {
+    mockHeroService.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges(); //run this to trigger the ngOnit()
+
+    let list = fixture.debugElement.queryAll(By.css("li")).length;
+    expect(list).toBe(3);
   });
 });
