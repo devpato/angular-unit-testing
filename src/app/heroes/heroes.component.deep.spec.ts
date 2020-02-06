@@ -59,11 +59,35 @@ describe("Heroes Components (deep test)", () => {
     );
 
     // (<HeroComponent>heroComponents[0].componentInstance).delete.emit(undefined); //tell the child component to emit the delete event
-    //heroComponents[0].triggerEventHandler('delete', null);
+    heroComponents[0].triggerEventHandler("delete", null);
     // heroComponents[0]
     //   .query(By.css("button"))
     //   .triggerEventHandler("click", { stopPropagation: () => {} });
 
     expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
+  });
+
+  it(`should add a new hero to the list when the add button is clicked`, () => {
+    mockHeroService.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges();
+
+    const name = "Mr.Hero";
+
+    mockHeroService.addHero.and.returnValue(of({ id: 4, name, strength: 4 }));
+    const inputElement = fixture.debugElement.query(By.css("input"))
+      .nativeElement;
+
+    const addButton = fixture.debugElement.queryAll(By.css("button"))[0];
+
+    inputElement.value = name;
+
+    addButton.triggerEventHandler("click", null);
+
+    fixture.detectChanges();
+
+    const heroText = fixture.debugElement.query(By.css("ul")).nativeElement
+      .textContent;
+
+    expect(heroText).toContain(name);
   });
 });
