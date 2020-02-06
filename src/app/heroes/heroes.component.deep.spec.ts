@@ -58,8 +58,8 @@ describe("Heroes Components (deep test)", () => {
       By.directive(HeroComponent)
     );
 
-    (<HeroComponent>heroComponents[0].componentInstance).delete.emit(undefined); //tell the child component to emit the delete event
-
+    // (<HeroComponent>heroComponents[0].componentInstance).delete.emit(undefined); //tell the child component to emit the delete event
+    //heroComponents[0].triggerEventHandler('delete', null);
     // heroComponents[0]
     //   .query(By.css("button"))
     //   .triggerEventHandler("click", { stopPropagation: () => {} });
