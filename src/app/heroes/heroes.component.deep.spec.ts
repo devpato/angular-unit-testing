@@ -85,8 +85,10 @@ describe("Heroes Components (deep test)", () => {
 
     fixture.detectChanges();
 
-    const heroText = fixture.debugElement.query(By.css("ul")).nativeElement
-      .textContent;
+    const heroText = fixture.debugElement.queryAll(By.css("li")).pop()
+      .nativeElement.textContent;
+
+    console.log(heroText);
 
     expect(heroText).toContain(name);
   });
