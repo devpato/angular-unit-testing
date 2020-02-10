@@ -1,11 +1,24 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { HeroesComponent } from "./heroes.component";
-import { NO_ERRORS_SCHEMA, Input, Component } from "@angular/core";
+import { NO_ERRORS_SCHEMA, Input, Component, Directive } from "@angular/core";
 import { HeroService } from "../hero.service";
 import { of } from "rxjs";
 import { Hero } from "../hero";
 import { By } from "@angular/platform-browser";
 import { HeroComponent } from "../hero/hero.component";
+
+@Directive({
+  selector: "[routerLink]",
+  host: { "(click)": "onClick()" } //will listen to to a click event
+})
+export class RouterLinkDirectiveStub {
+  @Input("routerLink") linkParms: any;
+  navigatorTo: any = null;
+
+  onClick() {
+    this.navigatorTo = this.linkParms;
+  }
+}
 
 describe("Heroes Components (deep test)", () => {
   let fixture: ComponentFixture<HeroesComponent>;
@@ -27,9 +40,9 @@ describe("Heroes Components (deep test)", () => {
     ];
 
     TestBed.configureTestingModule({
-      declarations: [HeroesComponent, HeroComponent],
-      providers: [{ provide: HeroService, useValue: mockHeroService }], //Long hand provider sintax by telling angular to mock the provider
-      schemas: [NO_ERRORS_SCHEMA]
+      declarations: [HeroesComponent, HeroComponent, RouterLinkDirectiveStub],
+      providers: [{ provide: HeroService, useValue: mockHeroService }] //Long hand provider sintax by telling angular to mock the provider
+      //schemas: [NO_ERRORS_SCHEMA] this will fail the router link if it commented out
     });
 
     fixture = TestBed.createComponent(HeroesComponent);
