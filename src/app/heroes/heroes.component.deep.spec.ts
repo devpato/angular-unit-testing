@@ -111,14 +111,14 @@ describe("Heroes Components (deep test)", () => {
     fixture.detectChanges();
 
     const heroComponents = fixture.debugElement.queryAll(
-      By.directive(HeroComponent)
+      By.directive(HeroComponent) //collection of directives,
     );
 
     let routerLink = heroComponents[0]
       .query(By.directive(RouterLinkDirectiveStub))
-      .injector.get(RouterLinkDirectiveStub);
+      .injector.get(RouterLinkDirectiveStub); //get the first routerlink directive of first hero
 
-    heroComponents[0].query(By.css("a")).triggerEventHandler("click", null);
+    heroComponents[0].query(By.css("a")).triggerEventHandler("click", null); //trigger the click event
 
     expect(routerLink.navigatorTo).toBe("/detail/1");
   });
