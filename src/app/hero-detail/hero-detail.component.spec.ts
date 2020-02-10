@@ -3,7 +3,8 @@ import {
   ComponentFixture,
   fakeAsync,
   tick,
-  flush
+  flush,
+  async
 } from "@angular/core/testing"; // for integration test
 import { HeroDetailComponent } from "./hero-detail.component";
 import { ActivatedRoute } from "@angular/router";
@@ -52,7 +53,37 @@ describe(`Hero Detail Component`, () => {
     ); //assert;
   });
 
-  it(`should call updateHero when save is called`, done => {
+  // it(`should call updateHero when save is called`, done => {
+  //   //now the test will wait until the async code its called
+  //   mockHeroService.updateHero.and.returnValue(of({}));
+
+  //   fixture.detectChanges(); //at
+
+  //   fixture.componentInstance.save();
+
+  //   setTimeout(() => {
+  //     //bacause we set 250 on the heroDeatails deboucen cal function
+  //     expect(mockHeroService.updateHero).toHaveBeenCalled();
+  //     done();
+  //   }, 300);
+  // });
+
+  // it("should call updateHero when save is called", fakeAsync(() => {
+  //   //now the test will wait until the async code its called
+  //   mockHeroService.updateHero.and.returnValue(of({}));
+
+  //   fixture.detectChanges(); //at
+
+  //   fixture.componentInstance.save();
+  //   //bacause we set 250 on the heroDeatails deboucen cal function
+
+  //   flush(); //look at the zone to see if there any task waiting
+
+  //   //tick(250); //control of zone.js can be manipulate the time inside of it thanks to thick
+  //   expect(mockHeroService.updateHero).toHaveBeenCalled();
+  // }));
+
+  it("should call updateHero when save is called", async(() => {
     //now the test will wait until the async code its called
     mockHeroService.updateHero.and.returnValue(of({}));
 
@@ -60,25 +91,9 @@ describe(`Hero Detail Component`, () => {
 
     fixture.componentInstance.save();
 
-    setTimeout(() => {
-      //bacause we set 250 on the heroDeatails deboucen cal function
+    fixture.whenStable().then(() => {
+      //checks for promises if they are all resolve
       expect(mockHeroService.updateHero).toHaveBeenCalled();
-      done();
-    }, 300);
-  });
-
-  it("should call updateHero when save is called", fakeAsync(() => {
-    //now the test will wait until the async code its called
-    mockHeroService.updateHero.and.returnValue(of({}));
-
-    fixture.detectChanges(); //at
-
-    fixture.componentInstance.save();
-    //bacause we set 250 on the heroDeatails deboucen cal function
-
-    flush(); //look at the zone to see if there any task waiting
-
-    //tick(250); //control of zone.js can be manipulate the time inside of it thanks to thick
-    expect(mockHeroService.updateHero).toHaveBeenCalled();
+    });
   }));
 });
