@@ -45,4 +45,19 @@ describe(`Hero Detail Component`, () => {
       "SPIDERDULEZ"
     ); //assert;
   });
+
+  it(`should call updateHero when save is called`, done => {
+    //now the test will wait until the async code its called
+    mockHeroService.updateHero.and.returnValue(of({}));
+
+    fixture.detectChanges(); //at
+
+    fixture.componentInstance.save();
+
+    setTimeout(() => {
+      //bacause we set 250 on the heroDeatails deboucen cal function
+      expect(mockHeroService.updateHero).toHaveBeenCalled();
+      done();
+    }, 300);
+  });
 });
