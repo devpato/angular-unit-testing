@@ -1,4 +1,10 @@
-import { TestBed, ComponentFixture } from "@angular/core/testing"; // for integration test
+import {
+  TestBed,
+  ComponentFixture,
+  fakeAsync,
+  tick,
+  flush
+} from "@angular/core/testing"; // for integration test
 import { HeroDetailComponent } from "./hero-detail.component";
 import { ActivatedRoute } from "@angular/router";
 import { HeroService } from "../hero.service";
@@ -60,4 +66,19 @@ describe(`Hero Detail Component`, () => {
       done();
     }, 300);
   });
+
+  it("should call updateHero when save is called", fakeAsync(() => {
+    //now the test will wait until the async code its called
+    mockHeroService.updateHero.and.returnValue(of({}));
+
+    fixture.detectChanges(); //at
+
+    fixture.componentInstance.save();
+    //bacause we set 250 on the heroDeatails deboucen cal function
+
+    flush(); //look at the zone to see if there any task waiting
+
+    //tick(250); //control of zone.js can be manipulate the time inside of it thanks to thick
+    expect(mockHeroService.updateHero).toHaveBeenCalled();
+  }));
 });
