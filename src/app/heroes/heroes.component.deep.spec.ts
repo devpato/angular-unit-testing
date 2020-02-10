@@ -105,4 +105,21 @@ describe("Heroes Components (deep test)", () => {
 
     expect(heroText).toContain(name);
   });
+
+  it(`should have the correct route or the first hereo`, () => {
+    mockHeroService.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges();
+
+    const heroComponents = fixture.debugElement.queryAll(
+      By.directive(HeroComponent)
+    );
+
+    let routerLink = heroComponents[0]
+      .query(By.directive(RouterLinkDirectiveStub))
+      .injector.get(RouterLinkDirectiveStub);
+
+    heroComponents[0].query(By.css("a")).triggerEventHandler("click", null);
+
+    expect(routerLink.navigatorTo).toBe("/detail/1");
+  });
 });
